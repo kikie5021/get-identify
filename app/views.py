@@ -14,12 +14,12 @@ logger = logging.getLogger(__name__)
 
 logger.info("Views module loaded")
 
-@app.route('/')
+@app.route('/home')
 def home():  # เปลี่ยนชื่อฟังก์ชันจาก index เป็น home
+    logger.info("Home endpoint called")
     strains = Strain.query.order_by(db.text('category asc, id asc'))
     test_foods = TestFood.query.order_by(db.text('id asc'))
     return render_template('index.html', strains=strains, test_foods=test_foods)
-
 
 @app.route('/strain/add', methods=['POST'])
 def strain_add():
@@ -33,7 +33,6 @@ def strain_add():
         flash(u'Added strain &ndash; {}'.format(strain.name))
     return redirect(url_for('settings'))
 
-
 @app.route('/strain/<id>', methods=['GET', 'POST'])
 def strain_edit(id):
     strain = Strain.query.get(id)
@@ -46,9 +45,7 @@ def strain_edit(id):
         db.session.commit()
         flash(u'Updated strain &ndash; {}'.format(strain.name))
         return redirect(url_for('settings'))
-    return render_template('strain_edit.html',
-        strain=strain, test_foods=test_foods, form=form)
-
+    return render_template('strain_edit.html', strain=strain, test_foods=test_foods, form=form)
 
 @app.route('/strain/<id>/delete', methods=['POST'])
 def strain_delete(id):
@@ -57,7 +54,6 @@ def strain_delete(id):
     db.session.delete(strain)
     db.session.commit()
     return redirect(url_for('settings'))
-
 
 @app.route('/test_food/add', methods=['POST'])
 def test_food_add():
@@ -70,7 +66,6 @@ def test_food_add():
         flash(u'Added test food &ndash; {}'.format(test_food.name))
     return redirect(url_for('settings'))
 
-
 @app.route('/test_food/<id>/delete', methods=['POST'])
 def test_food_delete(id):
     test_food = TestFood.query.get(id)
@@ -79,20 +74,16 @@ def test_food_delete(id):
     db.session.commit()
     return redirect(url_for('settings'))
 
-
 @app.route('/record')
 def record():
     sample_foods = SampleFood.query.filter_by(deleted_at=None).order_by(db.text('id desc'))
     return render_template('record.html', sample_foods=sample_foods)
 
-
 @app.route('/record/<id>')
 def record_view(id):
-   sample_food = SampleFood.query.get(id)
-   test_foods = TestFood.query.order_by(db.text('id asc'))
-   return render_template('record_view.html',
-       sample_food=sample_food, test_foods=test_foods)
-
+    sample_food = SampleFood.query.get(id)
+    test_foods = TestFood.query.order_by(db.text('id asc'))
+    return render_template('record_view.html', sample_food=sample_food, test_foods=test_foods)
 
 @app.route('/record/<id>/delete', methods=['POST'])
 def record_delete(id):
@@ -101,7 +92,6 @@ def record_delete(id):
     flash(u'Removed record &ndash; {}'.format(sample_food.name or '(Unnamed)'))
     db.session.commit()
     return redirect(url_for('record'))
-
 
 @app.route('/analysis', methods=['GET', 'POST'])
 def analysis():
@@ -119,13 +109,10 @@ def analysis():
         flash(error, 'error')
     return render_template('analysis.html', test_foods=test_foods, form=form)
 
-
 @app.route('/settings')
 def settings():
     strain_form = StrainForm()
     test_food_form = TestFoodForm()
     strains = Strain.query.order_by(db.text('category asc, id asc'))
     test_foods = TestFood.query.order_by(db.text('id asc'))
-    return render_template('settings.html',
-        strain_form=strain_form, test_food_form=test_food_form,
-        strains=strains, test_foods=test_foods)
+    return render_template('settings.html', strain_form=strain_form, test_food_form=test_food_form, strains=strains, test_foods=test_foods)

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import logging
 from flask import Flask, flash, render_template, redirect, request, url_for
 from datetime import datetime
 
@@ -8,9 +9,13 @@ from app.forms import StrainForm, TestFoodForm, SampleFoodForm
 from app import constants as C
 from app import app, db  # นำเข้า app และ db จาก __init__.py
 
-import sys
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
-print("Imported modules:", sys.modules.keys())  # ตรวจสอบโมดูลที่ถูกนำเข้า
+logger.info("Views module loaded")
+
+import sys
+logger.info("Imported modules: %s", sys.modules.keys())
 
 @app.route('/')
 def index():

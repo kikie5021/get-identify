@@ -6,7 +6,7 @@ from datetime import datetime
 from app.models import Strain, TestFood, SampleFood
 from app.forms import StrainForm, TestFoodForm, SampleFoodForm
 from app import constants as C
-from app import app, db
+from app import app, db  # นำเข้า app และ db จาก __init__.py
 
 
 @app.route('/')

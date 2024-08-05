@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import logging
-from flask import Flask, flash, render_template, redirect, request, url_for
+from flask import flash, render_template, redirect, request, url_for
 from datetime import datetime
 
 from app.models import Strain, TestFood, SampleFood
@@ -14,12 +14,8 @@ logger = logging.getLogger(__name__)
 
 logger.info("Views module loaded")
 
-import sys
-logger.info("Imported modules: %s", sys.modules.keys())
-
 @app.route('/')
-def index():
-    logger.info("Index endpoint called")
+def home():  # เปลี่ยนชื่อฟังก์ชันจาก index เป็น home
     strains = Strain.query.order_by(db.text('category asc, id asc'))
     test_foods = TestFood.query.order_by(db.text('id asc'))
     return render_template('index.html', strains=strains, test_foods=test_foods)
@@ -133,4 +129,3 @@ def settings():
     return render_template('settings.html',
         strain_form=strain_form, test_food_form=test_food_form,
         strains=strains, test_foods=test_foods)
-

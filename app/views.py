@@ -8,6 +8,9 @@ from app.forms import StrainForm, TestFoodForm, SampleFoodForm
 from app import constants as C
 from app import app, db  # นำเข้า app และ db จาก __init__.py
 
+import sys
+
+print("Imported modules:", sys.modules.keys())  # ตรวจสอบโมดูลที่ถูกนำเข้า
 
 @app.route('/')
 def index():

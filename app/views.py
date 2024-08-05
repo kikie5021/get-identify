@@ -19,6 +19,7 @@ logger.info("Imported modules: %s", sys.modules.keys())
 
 @app.route('/')
 def index():
+    logger.info("Index endpoint called")
     strains = Strain.query.order_by(db.text('category asc, id asc'))
     test_foods = TestFood.query.order_by(db.text('id asc'))
     return render_template('index.html', strains=strains, test_foods=test_foods)

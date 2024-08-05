@@ -133,3 +133,4 @@ def settings():
     return render_template('settings.html',
         strain_form=strain_form, test_food_form=test_food_form,
         strains=strains, test_foods=test_foods)
+

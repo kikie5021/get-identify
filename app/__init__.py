@@ -1,10 +1,16 @@
 # -*- coding: utf-8 -*-
 
+import logging
 from flask import Flask
 from flask_assets import Environment, Bundle
 from flask_sqlalchemy import SQLAlchemy
 
 from app import constants as C
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+logger.info("Creating Flask app")
 
 app = Flask(__name__)
 config = ('config.TestingConfig',
@@ -21,7 +27,7 @@ js = Bundle(*app.config['JS_ALL'], output='gen/packed.js')
 assets.register('css_all', css)
 assets.register('js_all', js)
 
-from app import views  # นำเข้า views ที่นี่
+from app import views
 
 app.jinja_env.add_extension('jinja2.ext.do')
 app.jinja_env.globals['C'] = C

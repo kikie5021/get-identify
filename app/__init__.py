@@ -27,6 +27,7 @@ js = Bundle(*app.config['JS_ALL'], output='gen/packed.js')
 assets.register('css_all', css)
 assets.register('js_all', js)
 
+logger.info("Importing views")
 from app import views
 
 app.jinja_env.add_extension('jinja2.ext.do')

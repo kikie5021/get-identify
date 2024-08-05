@@ -1,0 +1,85 @@
+{% set active_page = 'settings' -%}
+{% extends 'layout.html' -%}
+{% block body -%}
+  {% from 'macros/extras.html' import render_field -%}
+
+  {% set num_test_food = test_foods.count() -%}
+  {% set num_strain = strains.count() -%}
+  {% set test_result_inputs = ['<br><br>'] -%}
+  {% for f in test_foods -%}
+    {% do test_result_inputs.append('<input type="text" name="inputs[]" size="2" minlength="1" maxlength="1" placeholder="%s" style="margin-bottom:.4rem" oninput="inputTestResult()">'|format(f)) -%}
+  {%- endfor %}
+
+  <script>
+    var inputTestResult = function() {
+      var text = '';
+      $('[name^=inputs]').each(function() {
+        text = text + $(this).val();
+      });
+      $('[name=test_result]').val(text);
+    }
+  </script>
+
+  <div class="block-title"><i class="fa fa-table fa-fw"></i> Biochemical Broths Settings &ndash; {{ num_test_food }}</div>
+  <div class="block block--table">
+    <table>
+      {% for food in test_foods -%}
+        <tr>
+          <th>{{ food }}</th>
+          <td style="text-align:right">
+            <a href="javascript:" class="action" onclick="postConfirm('Do you want to remove this &ndash; {{ food.name }}?', '{{ url_for('test_food_delete', id=food.id) }}')">
+              <i class="fa fa-times-circle fa-fw"></i>
+            </a>
+          </td>
+        </tr>
+      {%- endfor %}
+      <tr>
+        <td colspan="2" style="background:#f5f5f5">
+          <form action="{{ url_for('test_food_add', ref='main') }}" method="post">
+            {{ test_food_form.csrf_token }}
+            <div class="row">
+              <div class="column column-75">
+                {{ render_field(test_food_form.name, with_label=false, style="text-transform:uppercase") }}
+              </div>
+              <div class="column column-25" style="text-align:right">
+                <button class="button"><i class="fa fa-plus"></i> Add</button>
+              </div>
+            </div>
+          </form>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="block-title"><i class="fa fa-table fa-fw"></i> Strains Settings &ndash; {{ num_strain }}</div>
+  <div class="block block--table">
+    <table>
+      {% for strain in strains -%}
+        <tr>
+          <td>{{ strain.name }}</td>
+          <td>{% for r in strain.test_result[:num_test_food] %}<i class="fa {{ {'+': 'fa-plus', '-': 'fa-minus'}[r] }} fa-fw"></i>{% endfor %}</td>
+          <td style="text-align:right">
+            <a href="{{ url_for('strain_edit', id=strain.id, ref='main') }}" class="action"><i class="fa fa-pen fa-fw"></i></a>
+            <a href="javascript:" class="action" onclick="postConfirm('Do you want to remove this &ndash; {{ strain.name }}?', '{{ url_for('strain_delete', id=strain.id) }}')">
+              <i class="fa fa-times-circle fa-fw"></i>
+            </a>
+          </td>
+        </tr>
+      {%- endfor %}
+      <tr>
+        <td colspan="3" style="background:#f5f5f5">
+          <form action="{{ url_for('strain_add', ref='main') }}" method="post">
+            {{ strain_form.csrf_token }}
+                {{ render_field(strain_form.name) }}
+                {{ render_field(strain_form.category) }}
+                {{ render_field(strain_form.test_result, unit=test_result_inputs|join(' ')|safe) }}
+              <div class="form_actions">
+                <button class="button"><i class="fa fa-plus"></i> Add</button>
+              </div>
+            </div>
+          </form>
+        </td>
+      </tr>
+    </table>
+  </div>
+{% endblock %}

@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 logger.info("Views module loaded")
 
+# Ensure only one definition of 'home' route exists
 @app.route('/home')
 def home():  # เปลี่ยนชื่อฟังก์ชันจาก index เป็น home
     logger.info("Home endpoint called")

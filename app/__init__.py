@@ -29,3 +29,4 @@ app.register_blueprint(main_blueprint)
 
 app.jinja_env.add_extension('jinja2.ext.do')
 app.jinja_env.globals['C'] = constants
+

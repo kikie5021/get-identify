@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from flask import Flask
 from flask_assets import Environment, Bundle
 from flask_sqlalchemy import SQLAlchemy
@@ -26,6 +24,6 @@ assets.register('js_all', js)
 logger.info("Flask app created")
 
 from app import views  # นำเข้า views ที่นี่
+from app.views import main as main_blueprint  # นำเข้า Blueprint
 
-app.jinja_env.add_extension('jinja2.ext.do')
-app.jinja_env.globals['C'] = constants
+app.register

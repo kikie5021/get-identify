@@ -23,7 +23,9 @@ assets.register('js_all', js)
 
 logger.info("Flask app created")
 
-from app import views  # นำเข้า views ที่นี่
 from app.views import main as main_blueprint  # นำเข้า Blueprint
 
-app.register
+app.register_blueprint(main_blueprint)
+
+app.jinja_env.add_extension('jinja2.ext.do')
+app.jinja_env.globals['C'] = constants

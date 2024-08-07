@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 import logging
 from flask import flash, render_template, redirect, request, url_for
 from datetime import datetime
@@ -15,8 +16,12 @@ logger = logging.getLogger(__name__)
 logger.info("Views module loaded")
 
 # Ensure only one definition of 'home' route exists
-@app.route('/home')
-def home():  # เปลี่ยนชื่อฟังก์ชันจาก index เป็น home
+from flask import Blueprint
+
+main = Blueprint('main', __name__)
+
+@main.route('/home')
+def home():
     logger.info("Home endpoint called")
     strains = Strain.query.order_by(db.text('category asc, id asc'))
     test_foods = TestFood.query.order_by(db.text('id asc'))

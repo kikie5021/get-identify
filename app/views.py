@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 logger.info("Views module loaded")
 
-# Ensure only one definition of 'home' route exists
+
 from flask import Blueprint
 
 main = Blueprint('main', __name__)
@@ -26,6 +26,8 @@ def home():
     strains = Strain.query.order_by(db.text('category asc, id asc'))
     test_foods = TestFood.query.order_by(db.text('id asc'))
     return render_template('index.html', strains=strains, test_foods=test_foods)
+
+# นิยามเส้นทางอื่นๆ ใน Blueprint นี้เช่นกัน
 
 @app.route('/strain/add', methods=['POST'])
 def strain_add():

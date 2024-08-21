@@ -1,19 +1,22 @@
 import unittest
-from app import create_app
+from app import app
 
-class BasicTests(unittest.TestCase):
+class BasicTestCase(unittest.TestCase):
     def setUp(self):
-        # creates a test client
-        app = create_app()
-        app.config['TESTING'] = True
+        # Set up the app for testing
         self.app = app.test_client()
+        self.app.testing = True
 
-    def test_main_page(self):
-        # sends HTTP GET request to the application
-        # on the specified path
+    def test_home_page(self):
+        # Test the home page access
         response = self.app.get('/')
-        # assert the status code of the response
         self.assertEqual(response.status_code, 200)
+        self.assertIn('Welcome', response.data.decode())
 
-if __name__ == "__main__":
+    def test_error_page(self):
+        # Test for error page response
+        response = self.app.get('/path-not-exist')
+        self.assertEqual(response.status_code, 404)
+
+if __name__ == '__main__':
     unittest.main()

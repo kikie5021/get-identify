@@ -30,5 +30,6 @@ jobs:
         export FLASK_APP=app
         export FLASK_ENV=development
 
-    - name: Start Flask server
-      run: flask run --host=0.0.0.0
+    - name: Test Flask application
+      run: |
+        python -m unittest discover tests
